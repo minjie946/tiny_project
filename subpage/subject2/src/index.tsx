@@ -23,7 +23,7 @@ function render (props:any) {
  * 通常我们可以在这里做一些全局变量的初始化，比如不会在 unmount 阶段被销毁的应用级别的缓存等。
  */
 export async function bootstrap(props:any) {
-  console.log('react app bootstraped')
+  console.log('react app2 bootstraped')
 }
 
 /**
@@ -38,4 +38,8 @@ export async function mount (props:any) {
  */
 export async function unmount (props:any) {
   root.unmount()
+}
+
+// 增加 update 钩子以便主应用手动更新微应用
+export async function update(props:any) {
 }

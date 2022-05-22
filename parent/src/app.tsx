@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
-import { registerMicroApps, start } from 'qiankun'
+import { registerMicroApps, start, initGlobalState, MicroAppStateActions } from 'qiankun'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import HomePage from './page/home'
+import Home2Page from './page/home2'
 import QiankunPage from './page/qiankun'
 
 export function hashPrefix (prefix:string) {
@@ -30,8 +31,22 @@ const qiankunProject = [
   }
 ]
 
+const state = {
+  userId: 10008611
+}
+
 export default () => {
   useEffect(() => {
+    // 初始化 state
+    const actions: MicroAppStateActions = initGlobalState(state)
+    actions.onGlobalStateChange((state, prev) => {
+      // state: 变更后的状态; prev 变更前的状态
+      console.log('变更前:', state, '变更后:', prev)
+    })
+    actions.setGlobalState(state)
+    // 关闭状态的接口
+    // actions.offGlobalStateChange()
+
     registerMicroApps(qiankunProject, {
       beforeLoad: async app => console.info(`[${app.name}]:before load`),
       beforeMount: [async app => console.info(`[${app.name}]:before mount`)],
@@ -49,6 +64,7 @@ export default () => {
         <Route path='app1' element={<QiankunPage />} />
         <Route path='app2' element={<QiankunPage />} />
       </Route>
+      <Route path="/home" element={<Home2Page />}/>
     </Routes>
   </HashRouter>
 }

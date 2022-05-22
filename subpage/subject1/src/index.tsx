@@ -23,13 +23,21 @@ function render (props:any) {
  * 通常我们可以在这里做一些全局变量的初始化，比如不会在 unmount 阶段被销毁的应用级别的缓存等。
  */
 export async function bootstrap(props:any) {
-  console.log('react app bootstraped')
+  console.log('bootstrap', props)
 }
 
 /**
  * 应用每次进入都会调用 mount 方法，通常我们在这里触发应用的渲染方法
  */
 export async function mount (props:any) {
+  console.log('mount', props)
+  props.onGlobalStateChange((state:any, prev:any) => {
+    // state: 变更后的状态; prev 变更前的状态
+    console.log('子项目----start')
+    console.log(state, prev)
+    console.log('子项目----end')
+  })
+  // props.setGlobalState(state);
   render(props)
 }
 
@@ -38,4 +46,8 @@ export async function mount (props:any) {
  */
 export async function unmount (props:any) {
   root.unmount()
+}
+
+// 增加 update 钩子以便主应用手动更新微应用
+export async function update(props:any) {
 }
